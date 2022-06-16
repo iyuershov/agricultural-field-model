@@ -1,0 +1,57 @@
+import os
+import requests
+from urllib.parse import urlencode
+
+from config import ya_api_key, ya_api_url
+
+
+class Device:
+    def __init__(self):
+        self.point = os.environ.get('point', '0,0')
+        self.global_longitude = float(os.environ.get('longitude', '37.738279'))
+        self.global_latitude = float(os.environ.get('latitude', '55.812170'))
+
+    async def get_weather_info(self):
+        request_params = {
+            'lat': self.global_latitude,
+            'lon': self.global_longitude,
+            'lang': 'ru_RU',
+            'limit': 1
+        }
+
+        request_headers = {
+            'X-Yandex-API-Key': ya_api_key
+        }
+
+        weather_info = {
+            'temperature': None,
+            'pressure': None,
+            'humidity': None,
+            'cloudness': None,
+            'wind_speed': None,
+            'wind_dir': None
+        }
+
+        print(ya_api_url + '?' + urlencode(request_params))
+        try:
+            response = requests.get(
+                url=ya_api_url + '?' + urlencode(request_params),
+                headers=request_headers
+            )
+
+            if response.status_code == 200:
+                data = response.json().get('fact', None)
+                if data is not None:
+                    weather_info = {
+                        'temperature': data.get('temp', None),
+                        'pressure': data.get('pressure_mm', None),
+                        'humidity': data.get('humidity', None),
+                        'cloudness': data.get('cloudness', None),
+                        'wind_speed': data.get('wind_speed', None),
+                        'wind_dir': data.get('wind_dir', None)
+                    }
+
+        except requests.RequestException as error:
+            print(error)
+
+        return weather_info

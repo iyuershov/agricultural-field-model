@@ -8,6 +8,7 @@ from config import ya_api_key, ya_api_url
 class Device:
     def __init__(self):
         self.point = os.environ.get('point', '0,0')
+        self.device_id = os.environ.get('device_id', '0')
         self.global_longitude = float(os.environ.get('longitude', '37.738279'))
         self.global_latitude = float(os.environ.get('latitude', '55.812170'))
 
@@ -24,6 +25,10 @@ class Device:
         }
 
         weather_info = {
+            'device_id': int(self.device_id),
+            'point': self.point,
+            'global_latitude': float(self.global_latitude),
+            'global_longitude': float(self.global_longitude),
             'temperature': None,
             'pressure': None,
             'humidity': None,
@@ -43,6 +48,10 @@ class Device:
                 data = response.json().get('fact', None)
                 if data is not None:
                     weather_info = {
+                        'device_id': int(self.device_id),
+                        'point': self.point,
+                        'global_latitude': float(self.global_latitude),
+                        'global_longitude': float(self.global_longitude),
                         'temperature': data.get('temp', None),
                         'pressure': data.get('pressure_mm', None),
                         'humidity': data.get('humidity', None),
@@ -52,6 +61,8 @@ class Device:
                     }
 
         except requests.RequestException as error:
-            print(error)
+            from log import log
+            log.exception('message')
+            log.error(error)
 
         return weather_info

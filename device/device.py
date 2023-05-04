@@ -7,7 +7,6 @@ from config import ya_api_key, ya_api_url
 
 class Device:
     def __init__(self):
-        print(os.environ)
         self.point = os.environ.get('point', '0,0')
         self.device_id = os.environ.get('device_id', '0')
         self.global_longitude = float(os.environ.get('longitude', '37.738279'))

@@ -31,3 +31,6 @@ services:
     build: server
     volumes:
       - ./server/db/data.db:/server/db/data.db
+
+
+

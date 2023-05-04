@@ -1,5 +1,5 @@
 import requests
-from typing import Dict
+from typing import Dict, Optional, Union
 from multiprocessing.pool import ThreadPool
 from config import devices
 from db.db_handlers import insert_unknown_exception, insert_device_exception, insert_weather_info
@@ -8,7 +8,7 @@ from db.db_handlers import insert_unknown_exception, insert_device_exception, in
 weather_params = ['temperature', 'pressure', 'humidity', 'cloudness', 'wind_speed', 'wind_dir']
 
 
-def get_device_data(device: Dict[str, str]) -> Dict[int, Dict[str, str]]:
+def get_device_data(device: Dict[str, str]) -> Dict[str, Union[int, Optional[dict]]]:
     device_data = None
 
     try:

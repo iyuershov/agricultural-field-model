@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  device_0:
+    environment:
+      - point=0,0
+      - device_id=0
+      - longitude=37.782136
+      - latitude=55.892970
+    build: device
+    ports:
+      - "8000:5555"
+  device_1:
+    environment:
+      - point=0,1
+      - device_id=1
+      - longitude=37.787254
+      - latitude=55.895908
+    build: device
+    ports:
+      - "8001:5555"
+  device_2:
+    environment:
+      - point=0,2
+      - device_id=2
+      - longitude=37.780231
+      - latitude=55.899089
+    build: device
+    ports:
+      - "8002:5555"
+  server:
+    build: server
+    volumes:
+      - ./server/db/data.db:/server/db/data.db

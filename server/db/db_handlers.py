@@ -45,7 +45,7 @@ def insert_weather_info(weather_info: Dict[str, str]) -> None:
     connection = sqlite3.connect('db/data.db')
     cursor = connection.cursor()
 
-    cursor.execute(f'''
+    query = f'''
         insert into weather_info (
             device_id, device_point, global_latitude, global_longitude, 
             temperature, pressure, humidity, cloudness, wind_speed, wind_dir, datetime
@@ -63,8 +63,9 @@ def insert_weather_info(weather_info: Dict[str, str]) -> None:
             '{weather_info['wind_dir']}',
             '{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}'
         );
-    ''')
+    '''
 
+    cursor.execute(query)
     connection.commit()
     cursor.close()
     connection.close()
